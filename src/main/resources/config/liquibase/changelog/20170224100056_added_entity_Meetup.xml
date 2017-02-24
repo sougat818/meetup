@@ -33,10 +33,6 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="meetup_description" type="varchar(1024)">
-                <constraints nullable="true" />
-            </column>
-
             <column name="meetup_going_status" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
@@ -47,6 +43,6 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-
+        
     </changeSet>
 </databaseChangeLog>

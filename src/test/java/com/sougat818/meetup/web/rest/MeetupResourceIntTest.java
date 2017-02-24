@@ -47,9 +47,6 @@ public class MeetupResourceIntTest {
     private static final String DEFAULT_MEETUP_URL = "AAAAAAAAAA";
     private static final String UPDATED_MEETUP_URL = "BBBBBBBBBB";
 
-    private static final String DEFAULT_MEETUP_DESCRIPTION = "AAAAAAAAAA";
-    private static final String UPDATED_MEETUP_DESCRIPTION = "BBBBBBBBBB";
-
     private static final String DEFAULT_MEETUP_GOING_STATUS = "AAAAAAAAAA";
     private static final String UPDATED_MEETUP_GOING_STATUS = "BBBBBBBBBB";
 
@@ -96,7 +93,6 @@ public class MeetupResourceIntTest {
                 .meetupId(DEFAULT_MEETUP_ID)
                 .meetupName(DEFAULT_MEETUP_NAME)
                 .meetupURL(DEFAULT_MEETUP_URL)
-                .meetupDescription(DEFAULT_MEETUP_DESCRIPTION)
                 .meetupGoingStatus(DEFAULT_MEETUP_GOING_STATUS);
         return meetup;
     }
@@ -125,7 +121,6 @@ public class MeetupResourceIntTest {
         assertThat(testMeetup.getMeetupId()).isEqualTo(DEFAULT_MEETUP_ID);
         assertThat(testMeetup.getMeetupName()).isEqualTo(DEFAULT_MEETUP_NAME);
         assertThat(testMeetup.getMeetupURL()).isEqualTo(DEFAULT_MEETUP_URL);
-        assertThat(testMeetup.getMeetupDescription()).isEqualTo(DEFAULT_MEETUP_DESCRIPTION);
         assertThat(testMeetup.getMeetupGoingStatus()).isEqualTo(DEFAULT_MEETUP_GOING_STATUS);
     }
 
@@ -163,7 +158,6 @@ public class MeetupResourceIntTest {
             .andExpect(jsonPath("$.[*].meetupId").value(hasItem(DEFAULT_MEETUP_ID.toString())))
             .andExpect(jsonPath("$.[*].meetupName").value(hasItem(DEFAULT_MEETUP_NAME.toString())))
             .andExpect(jsonPath("$.[*].meetupURL").value(hasItem(DEFAULT_MEETUP_URL.toString())))
-            .andExpect(jsonPath("$.[*].meetupDescription").value(hasItem(DEFAULT_MEETUP_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].meetupGoingStatus").value(hasItem(DEFAULT_MEETUP_GOING_STATUS.toString())));
     }
 
@@ -181,7 +175,6 @@ public class MeetupResourceIntTest {
             .andExpect(jsonPath("$.meetupId").value(DEFAULT_MEETUP_ID.toString()))
             .andExpect(jsonPath("$.meetupName").value(DEFAULT_MEETUP_NAME.toString()))
             .andExpect(jsonPath("$.meetupURL").value(DEFAULT_MEETUP_URL.toString()))
-            .andExpect(jsonPath("$.meetupDescription").value(DEFAULT_MEETUP_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.meetupGoingStatus").value(DEFAULT_MEETUP_GOING_STATUS.toString()));
     }
 
@@ -207,7 +200,6 @@ public class MeetupResourceIntTest {
                 .meetupId(UPDATED_MEETUP_ID)
                 .meetupName(UPDATED_MEETUP_NAME)
                 .meetupURL(UPDATED_MEETUP_URL)
-                .meetupDescription(UPDATED_MEETUP_DESCRIPTION)
                 .meetupGoingStatus(UPDATED_MEETUP_GOING_STATUS);
 
         restMeetupMockMvc.perform(put("/api/meetups")
@@ -222,7 +214,6 @@ public class MeetupResourceIntTest {
         assertThat(testMeetup.getMeetupId()).isEqualTo(UPDATED_MEETUP_ID);
         assertThat(testMeetup.getMeetupName()).isEqualTo(UPDATED_MEETUP_NAME);
         assertThat(testMeetup.getMeetupURL()).isEqualTo(UPDATED_MEETUP_URL);
-        assertThat(testMeetup.getMeetupDescription()).isEqualTo(UPDATED_MEETUP_DESCRIPTION);
         assertThat(testMeetup.getMeetupGoingStatus()).isEqualTo(UPDATED_MEETUP_GOING_STATUS);
     }
 

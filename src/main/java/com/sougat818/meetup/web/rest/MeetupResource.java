@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -48,7 +47,7 @@ public class MeetupResource {
      */
     @PostMapping("/meetups")
     @Timed
-    public ResponseEntity<Meetup> createMeetup(@Valid @RequestBody Meetup meetup) throws URISyntaxException {
+    public ResponseEntity<Meetup> createMeetup(@RequestBody Meetup meetup) throws URISyntaxException {
         log.debug("REST request to save Meetup : {}", meetup);
         if (meetup.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new meetup cannot already have an ID")).body(null);
@@ -70,7 +69,7 @@ public class MeetupResource {
      */
     @PutMapping("/meetups")
     @Timed
-    public ResponseEntity<Meetup> updateMeetup(@Valid @RequestBody Meetup meetup) throws URISyntaxException {
+    public ResponseEntity<Meetup> updateMeetup(@RequestBody Meetup meetup) throws URISyntaxException {
         log.debug("REST request to update Meetup : {}", meetup);
         if (meetup.getId() == null) {
             return createMeetup(meetup);

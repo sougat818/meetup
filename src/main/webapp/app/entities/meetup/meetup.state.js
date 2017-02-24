@@ -118,7 +118,6 @@
                                 meetupId: null,
                                 meetupName: null,
                                 meetupURL: null,
-                                meetupDescription: null,
                                 meetupGoingStatus: null,
                                 id: null
                             };

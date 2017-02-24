@@ -83,16 +83,11 @@ public class MeetupAPIService {
             if (meetup == null) {
                 meetup = new Meetup();
                 meetup.setMeetupId(result.getId());
-                meetup.setMeetupDescription(StringUtils.abbreviate(result.getDescription(), 1024));
                 meetup.setMeetupGoingStatus("May Be");
                 meetup.setMeetupGroup(meetupGroup);
                 meetup.setMeetupName(result.getName());
                 meetup.setMeetupURL(result.getEventUrl());
-                try {
-                    meetupRepository.save(meetup);
-                } catch(ConstraintViolationException | RollbackException e){
-                    log.info(meetup.toString());
-                }
+                meetupRepository.save(meetup);
             }
         }
     }

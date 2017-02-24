@@ -2,7 +2,6 @@ package com.sougat818.meetup.domain;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -28,9 +27,6 @@ public class Meetup implements Serializable {
 
     @Column(name = "meetup_url")
     private String meetupURL;
-
-    @Column(name = "meetup_description")
-    private String meetupDescription;
 
     @Column(name = "meetup_going_status")
     private String meetupGoingStatus;
@@ -83,19 +79,6 @@ public class Meetup implements Serializable {
 
     public void setMeetupURL(String meetupURL) {
         this.meetupURL = meetupURL;
-    }
-
-    public String getMeetupDescription() {
-        return meetupDescription;
-    }
-
-    public Meetup meetupDescription(String meetupDescription) {
-        this.meetupDescription = meetupDescription;
-        return this;
-    }
-
-    public void setMeetupDescription(String meetupDescription) {
-        this.meetupDescription = meetupDescription;
     }
 
     public String getMeetupGoingStatus() {
@@ -151,7 +134,6 @@ public class Meetup implements Serializable {
             ", meetupId='" + meetupId + "'" +
             ", meetupName='" + meetupName + "'" +
             ", meetupURL='" + meetupURL + "'" +
-            ", meetupDescription='" + meetupDescription + "'" +
             ", meetupGoingStatus='" + meetupGoingStatus + "'" +
             '}';
     }
