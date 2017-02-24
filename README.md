@@ -107,3 +107,6 @@ To set up a CI environment, consult the [Setting up Continuous Integration][] pa
 [Protractor]: https://angular.github.io/protractor/
 [Leaflet]: http://leafletjs.com/
 [DefinitelyTyped]: http://definitelytyped.org/
+
+
+yo jhipster --with-entities && git checkout src/main/java/com/sougat818/meetup/repository/MeetupGroupRepository.java src/main/java/com/sougat818/meetup/repository/MeetupRepository.java src/main/resources/config/application-dev.yml
