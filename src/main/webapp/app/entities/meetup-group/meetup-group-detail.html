@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span>Meetup Group</span> {{vm.meetupGroup.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span>Group Id</span></dt>
+        <dd>
+            <span>{{vm.meetupGroup.groupId}}</span>
+        </dd>
+        <dt><span>Group Name</span></dt>
+        <dd>
+            <span>{{vm.meetupGroup.groupName}}</span>
+        </dd>
+        <dt><span>Group URL</span></dt>
+        <dd>
+            <span>{{vm.meetupGroup.groupURL}}</span>
+        </dd>
+        <dt><span>Blocked</span></dt>
+        <dd>
+            <span>{{vm.meetupGroup.blocked}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="meetup-group-detail.edit({id:vm.meetupGroup.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down"> Edit</span>
+    </button>
+</div>
