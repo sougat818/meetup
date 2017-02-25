@@ -4,15 +4,9 @@ import com.codahale.metrics.annotation.Timed;
 import com.sougat818.meetup.domain.Meetup;
 import com.sougat818.meetup.service.MeetupService;
 import com.sougat818.meetup.web.rest.util.HeaderUtil;
-import com.sougat818.meetup.web.rest.util.PaginationUtil;
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,18 +77,13 @@ public class MeetupResource {
     /**
      * GET  /meetups : get all the meetups.
      *
-     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of meetups in body
-     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
     @GetMapping("/meetups")
     @Timed
-    public ResponseEntity<List<Meetup>> getAllMeetups(@ApiParam Pageable pageable)
-        throws URISyntaxException {
-        log.debug("REST request to get a page of Meetups");
-        Page<Meetup> page = meetupService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/meetups");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public List<Meetup> getAllMeetups() {
+        log.debug("REST request to get all Meetups");
+        return meetupService.findAll();
     }
 
     /**

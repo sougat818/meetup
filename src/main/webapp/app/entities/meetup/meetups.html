@@ -17,13 +17,14 @@
     <div class="table-responsive">
         <table class="jh-table table table-striped">
             <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="meetupId"><span>Meetup Id</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="meetupName"><span>Meetup Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="meetupURL"><span>Meetup URL</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="meetupGoingStatus"><span>Meetup Going Status</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="meetupGroup.groupName"><span>Meetup Group</span> <span class="glyphicon glyphicon-sort"></span></th>
+                <tr>
+                    <th><span>ID</span></th>
+                    <th><span>Meetup Id</span></th>
+                    <th><span>Meetup Name</span></th>
+                    <th><span>Meetup URL</span></th>
+                    <th><span>Meetup Going Status</span></th>
+                    <th><span>Date</span></th>
+                    <th><span>Meetup Group</span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -34,6 +35,7 @@
                     <td>{{meetup.meetupName}}</td>
                     <td>{{meetup.meetupURL}}</td>
                     <td>{{meetup.meetupGoingStatus}}</td>
+                    <td>{{meetup.date | date:'medium'}}</td>
                     <td>
                         <a ui-sref="meetup-group-detail({id:meetup.meetupGroup.id})">{{meetup.meetupGroup.groupName}}</a>
                     </td>
@@ -63,8 +65,4 @@
             </tbody>
         </table>
     </div>
-    <div class="text-center">
-        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
-    </div>
-    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
 </div>

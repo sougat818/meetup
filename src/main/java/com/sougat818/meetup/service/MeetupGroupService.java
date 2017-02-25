@@ -4,8 +4,6 @@ import com.sougat818.meetup.domain.MeetupGroup;
 import com.sougat818.meetup.repository.MeetupGroupRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -41,13 +39,13 @@ public class MeetupGroupService {
     /**
      *  Get all the meetupGroups.
      *  
-     *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<MeetupGroup> findAll(Pageable pageable) {
+    public List<MeetupGroup> findAll() {
         log.debug("Request to get all MeetupGroups");
-        Page<MeetupGroup> result = meetupGroupRepository.findAll(pageable);
+        List<MeetupGroup> result = meetupGroupRepository.findAll();
+
         return result;
     }
 

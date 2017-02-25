@@ -20,6 +20,10 @@
         <dd>
             <span>{{vm.meetup.meetupGoingStatus}}</span>
         </dd>
+        <dt><span>Date</span></dt>
+        <dd>
+            <span>{{vm.meetup.date | date:'medium'}}</span>
+        </dd>
         <dt><span>Meetup Group</span></dt>
         <dd>
             <a ui-sref="meetup-group-detail({id:vm.meetup.meetupGroup.id})">{{vm.meetup.meetupGroup.groupName}}</a>

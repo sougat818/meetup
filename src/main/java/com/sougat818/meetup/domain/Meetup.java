@@ -3,6 +3,7 @@ package com.sougat818.meetup.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -30,6 +31,9 @@ public class Meetup implements Serializable {
 
     @Column(name = "meetup_going_status")
     private String meetupGoingStatus;
+
+    @Column(name = "date")
+    private ZonedDateTime date;
 
     @ManyToOne
     private MeetupGroup meetupGroup;
@@ -94,6 +98,19 @@ public class Meetup implements Serializable {
         this.meetupGoingStatus = meetupGoingStatus;
     }
 
+    public ZonedDateTime getDate() {
+        return date;
+    }
+
+    public Meetup date(ZonedDateTime date) {
+        this.date = date;
+        return this;
+    }
+
+    public void setDate(ZonedDateTime date) {
+        this.date = date;
+    }
+
     public MeetupGroup getMeetupGroup() {
         return meetupGroup;
     }
@@ -135,6 +152,7 @@ public class Meetup implements Serializable {
             ", meetupName='" + meetupName + "'" +
             ", meetupURL='" + meetupURL + "'" +
             ", meetupGoingStatus='" + meetupGoingStatus + "'" +
+            ", date='" + date + "'" +
             '}';
     }
 }

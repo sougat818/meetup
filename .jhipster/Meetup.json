@@ -24,11 +24,15 @@
         {
             "fieldName": "meetupGoingStatus",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime"
         }
     ],
     "changelogDate": "20170224100056",
     "dto": "no",
     "service": "serviceClass",
     "entityTableName": "meetup",
-    "pagination": "pager"
+    "pagination": "no"
 }

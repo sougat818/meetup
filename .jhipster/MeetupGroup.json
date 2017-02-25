@@ -30,5 +30,5 @@
     "dto": "no",
     "service": "serviceClass",
     "entityTableName": "meetup_group",
-    "pagination": "pager"
+    "pagination": "no"
 }

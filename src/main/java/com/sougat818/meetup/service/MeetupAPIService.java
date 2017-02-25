@@ -33,6 +33,7 @@ import javax.persistence.RollbackException;
 import javax.validation.ConstraintViolationException;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
 
@@ -85,6 +86,7 @@ public class MeetupAPIService {
                 meetup.setMeetupId(result.getId());
                 meetup.setMeetupGoingStatus("May Be");
                 meetup.setMeetupGroup(meetupGroup);
+                meetup.setDate(Instant.ofEpochMilli(result.getTime()).atZone(ZoneId.of("Australia/Sydney")));
                 meetup.setMeetupName(result.getName());
                 meetup.setMeetupURL(result.getEventUrl());
                 meetupRepository.save(meetup);

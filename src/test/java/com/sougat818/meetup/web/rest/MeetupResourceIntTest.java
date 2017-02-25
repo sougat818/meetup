@@ -22,8 +22,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.List;
 
+import static com.sougat818.meetup.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -49,6 +54,9 @@ public class MeetupResourceIntTest {
 
     private static final String DEFAULT_MEETUP_GOING_STATUS = "AAAAAAAAAA";
     private static final String UPDATED_MEETUP_GOING_STATUS = "BBBBBBBBBB";
+
+    private static final ZonedDateTime DEFAULT_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     @Autowired
     private MeetupRepository meetupRepository;
@@ -93,7 +101,8 @@ public class MeetupResourceIntTest {
                 .meetupId(DEFAULT_MEETUP_ID)
                 .meetupName(DEFAULT_MEETUP_NAME)
                 .meetupURL(DEFAULT_MEETUP_URL)
-                .meetupGoingStatus(DEFAULT_MEETUP_GOING_STATUS);
+                .meetupGoingStatus(DEFAULT_MEETUP_GOING_STATUS)
+                .date(DEFAULT_DATE);
         return meetup;
     }
 
@@ -122,6 +131,7 @@ public class MeetupResourceIntTest {
         assertThat(testMeetup.getMeetupName()).isEqualTo(DEFAULT_MEETUP_NAME);
         assertThat(testMeetup.getMeetupURL()).isEqualTo(DEFAULT_MEETUP_URL);
         assertThat(testMeetup.getMeetupGoingStatus()).isEqualTo(DEFAULT_MEETUP_GOING_STATUS);
+        assertThat(testMeetup.getDate()).isEqualTo(DEFAULT_DATE);
     }
 
     @Test
@@ -158,7 +168,8 @@ public class MeetupResourceIntTest {
             .andExpect(jsonPath("$.[*].meetupId").value(hasItem(DEFAULT_MEETUP_ID.toString())))
             .andExpect(jsonPath("$.[*].meetupName").value(hasItem(DEFAULT_MEETUP_NAME.toString())))
             .andExpect(jsonPath("$.[*].meetupURL").value(hasItem(DEFAULT_MEETUP_URL.toString())))
-            .andExpect(jsonPath("$.[*].meetupGoingStatus").value(hasItem(DEFAULT_MEETUP_GOING_STATUS.toString())));
+            .andExpect(jsonPath("$.[*].meetupGoingStatus").value(hasItem(DEFAULT_MEETUP_GOING_STATUS.toString())))
+            .andExpect(jsonPath("$.[*].date").value(hasItem(sameInstant(DEFAULT_DATE))));
     }
 
     @Test
@@ -175,7 +186,8 @@ public class MeetupResourceIntTest {
             .andExpect(jsonPath("$.meetupId").value(DEFAULT_MEETUP_ID.toString()))
             .andExpect(jsonPath("$.meetupName").value(DEFAULT_MEETUP_NAME.toString()))
             .andExpect(jsonPath("$.meetupURL").value(DEFAULT_MEETUP_URL.toString()))
-            .andExpect(jsonPath("$.meetupGoingStatus").value(DEFAULT_MEETUP_GOING_STATUS.toString()));
+            .andExpect(jsonPath("$.meetupGoingStatus").value(DEFAULT_MEETUP_GOING_STATUS.toString()))
+            .andExpect(jsonPath("$.date").value(sameInstant(DEFAULT_DATE)));
     }
 
     @Test
@@ -200,7 +212,8 @@ public class MeetupResourceIntTest {
                 .meetupId(UPDATED_MEETUP_ID)
                 .meetupName(UPDATED_MEETUP_NAME)
                 .meetupURL(UPDATED_MEETUP_URL)
-                .meetupGoingStatus(UPDATED_MEETUP_GOING_STATUS);
+                .meetupGoingStatus(UPDATED_MEETUP_GOING_STATUS)
+                .date(UPDATED_DATE);
 
         restMeetupMockMvc.perform(put("/api/meetups")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -215,6 +228,7 @@ public class MeetupResourceIntTest {
         assertThat(testMeetup.getMeetupName()).isEqualTo(UPDATED_MEETUP_NAME);
         assertThat(testMeetup.getMeetupURL()).isEqualTo(UPDATED_MEETUP_URL);
         assertThat(testMeetup.getMeetupGoingStatus()).isEqualTo(UPDATED_MEETUP_GOING_STATUS);
+        assertThat(testMeetup.getDate()).isEqualTo(UPDATED_DATE);
     }
 
     @Test
