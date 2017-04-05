@@ -1,13 +1,13 @@
 <div>
-    <h2>Meetups</h2>
+    <h2>Hidden Meetups</h2>
     <jhi-alert></jhi-alert>
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="meetup.new" >
+                <button class="btn btn-primary" ui-sref="hidden-meetup.new" >
                     <span class="glyphicon glyphicon-plus"></span>
                     <span >
-                        Create new Meetup
+                        Create new Hidden Meetup
                     </span>
                 </button>
             </div>
@@ -29,31 +29,32 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="meetup in vm.meetups track by meetup.id">
-                    <td><a ui-sref="meetup-detail({id:meetup.id})">{{meetup.id}}</a></td>
-                    <td>{{meetup.meetupId}}</td>
-                    <td><a target="_blank" href="{{meetup.meetupURL}}">{{meetup.meetupName}}</a></td>
-                    <td>{{meetup.meetupGoingStatus}}</td>
-                    <td>{{meetup.date | date:'medium'}}</td>
+                <tr ng-repeat="hiddenMeetup in vm.hiddenMeetups track by hiddenMeetup.id">
+                    <td><a ui-sref="hidden-meetup-detail({id:hiddenMeetup.id})">{{hiddenMeetup.id}}</a></td>
+                    <td>{{hiddenMeetup.meetupId}}</td>
+                    <td>{{hiddenMeetup.meetupName}}</td>
+                    <td>{{hiddenMeetup.meetupURL}}</td>
+                    <td>{{hiddenMeetup.meetupGoingStatus}}</td>
+                    <td>{{hiddenMeetup.date | date:'medium'}}</td>
                     <td>
-                        <a ui-sref="meetup-group-detail({id:meetup.meetupGroup.id})">{{meetup.meetupGroup.groupName}}</a>
+                        <a ui-sref="meetup-group-detail({id:hiddenMeetup.meetupGroup.id})">{{hiddenMeetup.meetupGroup.groupName}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"
-                                    ui-sref="meetup-detail({id:meetup.id})"
+                                    ui-sref="hidden-meetup-detail({id:hiddenMeetup.id})"
                                     class="btn btn-info btn-sm">
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span class="hidden-sm-down"></span>
                             </button>
                             <button type="submit"
-                                    ui-sref="meetup.edit({id:meetup.id})"
+                                    ui-sref="hidden-meetup.edit({id:hiddenMeetup.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-sm-down"></span>
                             </button>
                             <button type="submit"
-                                    ui-sref="meetup.delete({id:meetup.id})"
+                                    ui-sref="hidden-meetup.delete({id:hiddenMeetup.id})"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove-circle"></span>
                                 <span class="hidden-sm-down"></span>

@@ -38,6 +38,10 @@ public class MeetupGroup implements Serializable {
     @JsonIgnore
     private Set<Meetup> meetups = new HashSet<>();
 
+    @OneToMany(mappedBy = "meetupGroup")
+    @JsonIgnore
+    private Set<HiddenMeetup> hiddenMeetups = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -121,6 +125,31 @@ public class MeetupGroup implements Serializable {
 
     public void setMeetups(Set<Meetup> meetups) {
         this.meetups = meetups;
+    }
+
+    public Set<HiddenMeetup> getHiddenMeetups() {
+        return hiddenMeetups;
+    }
+
+    public MeetupGroup hiddenMeetups(Set<HiddenMeetup> hiddenMeetups) {
+        this.hiddenMeetups = hiddenMeetups;
+        return this;
+    }
+
+    public MeetupGroup addHiddenMeetup(HiddenMeetup hiddenMeetup) {
+        this.hiddenMeetups.add(hiddenMeetup);
+        hiddenMeetup.setMeetupGroup(this);
+        return this;
+    }
+
+    public MeetupGroup removeHiddenMeetup(HiddenMeetup hiddenMeetup) {
+        this.hiddenMeetups.remove(hiddenMeetup);
+        hiddenMeetup.setMeetupGroup(null);
+        return this;
+    }
+
+    public void setHiddenMeetups(Set<HiddenMeetup> hiddenMeetups) {
+        this.hiddenMeetups = hiddenMeetups;
     }
 
     @Override

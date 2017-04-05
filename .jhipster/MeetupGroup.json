@@ -6,6 +6,12 @@
             "otherEntityName": "meetup",
             "relationshipType": "one-to-many",
             "otherEntityRelationshipName": "meetupGroup"
+        },
+        {
+            "relationshipName": "hiddenMeetup",
+            "otherEntityName": "hiddenMeetup",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "meetupGroup"
         }
     ],
     "fields": [

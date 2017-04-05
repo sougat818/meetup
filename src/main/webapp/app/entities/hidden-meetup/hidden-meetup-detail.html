@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span>Hidden Meetup</span> {{vm.hiddenMeetup.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span>Meetup Id</span></dt>
+        <dd>
+            <span>{{vm.hiddenMeetup.meetupId}}</span>
+        </dd>
+        <dt><span>Meetup Name</span></dt>
+        <dd>
+            <span>{{vm.hiddenMeetup.meetupName}}</span>
+        </dd>
+        <dt><span>Meetup URL</span></dt>
+        <dd>
+            <span>{{vm.hiddenMeetup.meetupURL}}</span>
+        </dd>
+        <dt><span>Meetup Going Status</span></dt>
+        <dd>
+            <span>{{vm.hiddenMeetup.meetupGoingStatus}}</span>
+        </dd>
+        <dt><span>Date</span></dt>
+        <dd>
+            <span>{{vm.hiddenMeetup.date | date:'medium'}}</span>
+        </dd>
+        <dt><span>Meetup Group</span></dt>
+        <dd>
+            <a ui-sref="meetup-group-detail({id:vm.hiddenMeetup.meetupGroup.id})">{{vm.hiddenMeetup.meetupGroup.groupName}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button" ui-sref="hidden-meetup-detail.edit({id:vm.hiddenMeetup.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down"> Edit</span>
+    </button>
+</div>

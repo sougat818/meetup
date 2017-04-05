@@ -17,7 +17,7 @@ import java.util.List;
 public class MeetupService {
 
     private final Logger log = LoggerFactory.getLogger(MeetupService.class);
-    
+
     private final MeetupRepository meetupRepository;
 
     public MeetupService(MeetupRepository meetupRepository) {
@@ -38,13 +38,13 @@ public class MeetupService {
 
     /**
      *  Get all the meetups.
-     *  
+     *
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
     public List<Meetup> findAll() {
         log.debug("Request to get all Meetups");
-        List<Meetup> result = meetupRepository.findAll();
+        List<Meetup> result = meetupRepository.findAllByOrderByDateAsc();
 
         return result;
     }

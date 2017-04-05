@@ -4,6 +4,7 @@ import com.sougat818.meetup.domain.Meetup;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
@@ -13,4 +14,12 @@ import java.util.List;
 public interface MeetupRepository extends JpaRepository<Meetup,Long> {
 
     Meetup findOneByMeetupId(String id);
+
+    List<Meetup> findAllByMeetupGoingStatusEquals(String status);
+
+    List<Meetup> findAllByDateBefore(ZonedDateTime date);
+
+    List<Meetup> findAllByOrderByDateAsc();
+
+
 }

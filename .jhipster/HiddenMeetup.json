@@ -1,0 +1,38 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "meetupGroup",
+            "otherEntityName": "meetupGroup",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "groupName"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "meetupId",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "meetupName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "meetupURL",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "meetupGoingStatus",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20170224100056",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "hidden_meetup",
+    "pagination": "no"
+}

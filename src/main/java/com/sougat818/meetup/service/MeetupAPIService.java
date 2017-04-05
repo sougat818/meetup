@@ -1,18 +1,11 @@
 package com.sougat818.meetup.service;
 
-import com.sougat818.meetup.domain.Authority;
-import com.sougat818.meetup.domain.Meetup;
-import com.sougat818.meetup.domain.MeetupGroup;
-import com.sougat818.meetup.domain.User;
+import com.sougat818.meetup.domain.*;
 import com.sougat818.meetup.pojo.Group;
 import com.sougat818.meetup.pojo.MeetupResult;
 import com.sougat818.meetup.pojo.Result;
-import com.sougat818.meetup.repository.AuthorityRepository;
-import com.sougat818.meetup.repository.MeetupGroupRepository;
-import com.sougat818.meetup.repository.MeetupRepository;
-import com.sougat818.meetup.repository.PersistentTokenRepository;
+import com.sougat818.meetup.repository.*;
 import com.sougat818.meetup.config.Constants;
-import com.sougat818.meetup.repository.UserRepository;
 import com.sougat818.meetup.security.AuthoritiesConstants;
 import com.sougat818.meetup.security.SecurityUtils;
 import com.sougat818.meetup.service.util.RandomUtil;
@@ -51,22 +44,48 @@ public class MeetupAPIService {
 
     private final MeetupRepository meetupRepository;
 
+    private final HiddenMeetupRepository hiddenMeetupRepository;
 
-    public MeetupAPIService(MeetupRepository meetupRepository, MeetupGroupRepository meetupGroupRepository) {
+
+    public MeetupAPIService(MeetupRepository meetupRepository, MeetupGroupRepository meetupGroupRepository, HiddenMeetupRepository hiddenMeetupRepository) {
         this.meetupGroupRepository = meetupGroupRepository;
         this.meetupRepository = meetupRepository;
+        this.hiddenMeetupRepository = hiddenMeetupRepository;
+    }
+
+
+    private void updateMeetup(Result result, Meetup meetup) {
+        if (!Instant.ofEpochMilli(result.getTime()).atZone(ZoneId.of("Australia/Sydney")).equals(meetup.getDate())) {
+            log.info("Updating Meetup");
+            meetup.setDate(Instant.ofEpochMilli(result.getTime()).atZone(ZoneId.of("Australia/Sydney")));
+            meetupRepository.save(meetup);
+        }
     }
 
     /**
      *
      */
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 */10 * * * *")
     public void updateFromMeetupAPI() {
         log.info("Updating from Meetup API at " + Instant.now());
         List<Result> results = getMeetupList(URL, null);
 
         for (Result result :
             results) {
+
+            HiddenMeetup hiddenMeetup = hiddenMeetupRepository.findOneByMeetupId(result.getId());
+
+            if (hiddenMeetup != null) {
+                continue;
+            }
+
+            Meetup meetup = meetupRepository.findOneByMeetupId(result.getId());
+
+            if (meetup != null) {
+                updateMeetup(result, meetup);
+                continue;
+            }
+
             Group group = result.getGroup();
             MeetupGroup meetupGroup = meetupGroupRepository.findOneByGroupId(String.valueOf(group.getId()));
 
@@ -80,19 +99,116 @@ public class MeetupAPIService {
             }
 
 
-            Meetup meetup = meetupRepository.findOneByMeetupId(result.getId());
-            if (meetup == null) {
-                meetup = new Meetup();
-                meetup.setMeetupId(result.getId());
-                meetup.setMeetupGoingStatus("May Be");
-                meetup.setMeetupGroup(meetupGroup);
-                meetup.setDate(Instant.ofEpochMilli(result.getTime()).atZone(ZoneId.of("Australia/Sydney")));
-                meetup.setMeetupName(result.getName());
-                meetup.setMeetupURL(result.getEventUrl());
-                meetupRepository.save(meetup);
+            if (meetupGroup.isBlocked()) {
+                hiddenMeetup = new HiddenMeetup();
+                hiddenMeetup.setMeetupId(result.getId());
+                hiddenMeetup.setMeetupGoingStatus("hide");
+                hiddenMeetup.setMeetupGroup(meetupGroup);
+                hiddenMeetup.setDate(Instant.ofEpochMilli(result.getTime()).atZone(ZoneId.of("Australia/Sydney")));
+                hiddenMeetup.setMeetupName(result.getName());
+                hiddenMeetup.setMeetupURL(result.getEventUrl());
+                hiddenMeetupRepository.save(hiddenMeetup);
+                continue;
             }
+
+            meetup = new Meetup();
+            meetup.setMeetupId(result.getId());
+            meetup.setMeetupGoingStatus("May Be");
+            meetup.setMeetupGroup(meetupGroup);
+            meetup.setDate(Instant.ofEpochMilli(result.getTime()).atZone(ZoneId.of("Australia/Sydney")));
+            meetup.setMeetupName(result.getName());
+            meetup.setMeetupURL(result.getEventUrl());
+            meetupRepository.save(meetup);
         }
     }
+
+    /**
+     *
+     */
+    @Scheduled(cron = "0 */10 * * * *")
+    public void moveHiddenMeetups() {
+        log.info("Moving Hidden Meetups " + Instant.now());
+        List<Meetup> meetups = meetupRepository.findAllByMeetupGoingStatusEquals("hide");
+
+        for (Meetup meetup :
+            meetups) {
+            HiddenMeetup hiddenMeetup = convertMeetupToHiddenMeetup(meetup);
+            hiddenMeetupRepository.save(hiddenMeetup);
+            meetupRepository.delete(meetup);
+        }
+
+    }
+
+    /**
+     *
+     */
+    @Scheduled(cron = "0 */10 * * * *")
+    public void moveUnhiddenMeetups() {
+        log.info("Moving Unhidden Meetups " + Instant.now());
+        List<HiddenMeetup> hiddenMeetups = hiddenMeetupRepository.findAllByMeetupGoingStatusNot("hide");
+
+        for (HiddenMeetup hiddenMeetup :
+            hiddenMeetups) {
+            Meetup meetup = convertHiddenMeetupToMeetup(hiddenMeetup);
+            meetupRepository.save(meetup);
+            hiddenMeetupRepository.delete(hiddenMeetup);
+        }
+
+    }
+
+
+    /**
+     *
+     */
+    @Scheduled(cron = "0 */10 * * * *")
+    public void deleteOldMeetups() {
+        log.info("Deleting Old Meetups " + Instant.now());
+        List<Meetup> meetups = meetupRepository.findAllByDateBefore(ZonedDateTime.now());
+
+        for (Meetup meetup :
+            meetups) {
+            meetupRepository.delete(meetup);
+        }
+
+    }
+
+    /**
+     *
+     */
+    @Scheduled(cron = "0 */10 * * * *")
+    public void deleteOldHiddenMeetups() {
+        log.info("Deleting Old Hidden Meetups " + Instant.now());
+        List<HiddenMeetup> hiddenMeetups = hiddenMeetupRepository.findAllByDateBefore(ZonedDateTime.now());
+
+        for (HiddenMeetup hiddenMeetup :
+            hiddenMeetups) {
+            hiddenMeetupRepository.delete(hiddenMeetup);
+        }
+
+    }
+
+    private HiddenMeetup convertMeetupToHiddenMeetup(Meetup meetup) {
+        HiddenMeetup hiddenMeetup = new HiddenMeetup();
+        hiddenMeetup.setDate(meetup.getDate());
+        hiddenMeetup.setMeetupGoingStatus(meetup.getMeetupGoingStatus());
+        hiddenMeetup.setMeetupGroup(meetup.getMeetupGroup());
+        hiddenMeetup.setMeetupName(meetup.getMeetupName());
+        hiddenMeetup.setMeetupURL(meetup.getMeetupURL());
+        hiddenMeetup.setMeetupId(meetup.getMeetupId());
+        return hiddenMeetup;
+    }
+
+    private Meetup convertHiddenMeetupToMeetup(HiddenMeetup hiddenMeetup) {
+        Meetup meetup = new Meetup();
+        meetup.setDate(hiddenMeetup.getDate());
+        meetup.setMeetupGoingStatus(hiddenMeetup.getMeetupGoingStatus());
+        meetup.setMeetupGroup(hiddenMeetup.getMeetupGroup());
+        meetup.setMeetupName(hiddenMeetup.getMeetupName());
+        meetup.setMeetupURL(hiddenMeetup.getMeetupURL());
+        meetup.setMeetupId(hiddenMeetup.getMeetupId());
+        return meetup;
+    }
+
 
     private List<Result> getMeetupList(String url, List<Result> results) {
         if (results == null) {

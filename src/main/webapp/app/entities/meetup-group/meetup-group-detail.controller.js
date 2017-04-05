@@ -5,9 +5,9 @@
         .module('meetupApp')
         .controller('MeetupGroupDetailController', MeetupGroupDetailController);
 
-    MeetupGroupDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'MeetupGroup', 'Meetup'];
+    MeetupGroupDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'MeetupGroup', 'Meetup', 'HiddenMeetup'];
 
-    function MeetupGroupDetailController($scope, $rootScope, $stateParams, previousState, entity, MeetupGroup, Meetup) {
+    function MeetupGroupDetailController($scope, $rootScope, $stateParams, previousState, entity, MeetupGroup, Meetup, HiddenMeetup) {
         var vm = this;
 
         vm.meetupGroup = entity;
